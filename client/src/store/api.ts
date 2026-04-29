@@ -3,15 +3,24 @@ import { request, gql } from 'graphql-request';
 import type { Form, Response, CreateFormInput, SubmitResponseInput } from '../types';
 
 const graphqlBaseQuery = ({ baseUrl }: { baseUrl: string }) => 
-  async ({ document, variables }: { document: string | any; variables?: any }) => {
+  async ({ document, variables }: { document: string; variables?: Record<string, unknown> }) => {
     try {
       const result = await request(baseUrl, document, variables);
       return { data: result };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const err = error as { response: { status?: number; errors?: unknown }; message?: string };
+        return {
+          error: {
+            status: err.response.status || 500,
+            data: err.response.errors || err.message,
+          },
+        };
+      }
       return {
         error: {
-          status: error.response?.status || 500,
-          data: error.response?.errors || error.message,
+          status: 500,
+          data: error instanceof Error ? error.message : 'Unknown error',
         },
       };
     }
