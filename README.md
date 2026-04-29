@@ -76,18 +76,22 @@ You can run both services concurrently using the workspace scripts provided in t
 ## 📂 Project Structure
 
 ```text
-├── client/                # React application
+├── client/                # React application (Frontend)
 │   ├── src/
-│   │   ├── components/    # Reusable UI and Shared components
-│   │   ├── features/      # Feature-specific logic (hooks, schemas, components)
-│   │   ├── store/         # Redux store and API slices
-│   │   └── pages/         # Page components (routes)
-├── server/                # NestJS GraphQL API
+│   │   ├── components/    # UI components (ui/, shared/, form/)
+│   │   ├── hooks/         # Custom React hooks (useHomeForms, useResponses, etc.)
+│   │   ├── store/         # Redux store & RTK Query API slices
+│   │   ├── pages/         # Page components & Routes
+│   │   ├── types/         # TypeScript interfaces & types
+│   │   └── lib/           # Utility functions & Shared logic
+├── server/                # NestJS application (Backend API)
 │   ├── src/
-│   │   ├── forms/         # Forms module (resolvers, services, models)
-│   │   └── database/      # In-memory data structures
-├── docker-compose.yml     # Docker orchestration
-└── package.json           # Monorepo configuration (NPM Workspaces)
+│   │   ├── forms/         # Forms module (Resolvers, Services, Models, GraphQL)
+│   │   ├── database/      # In-memory data structures (forms.data.ts)
+│   │   └── graphql.ts     # Auto-generated GraphQL types
+├── docker-compose.yml     # Docker orchestration for Dev/Prod
+├── package.json           # Root configuration with NPM Workspaces
+└── .env                   # Environment variables
 ```
 
 ## Core Features
